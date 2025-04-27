@@ -4,7 +4,7 @@ from typing import Literal
 from benedict import benedict
 import voluptuous as vol
 
-type Format = Literal['auto', 'yaml', 'json', 'dict', 'toml']
+type Format = Literal['auto', 'yaml', 'json', 'dict', 'toml', 'ini']
 
 
 class Configurator:
@@ -26,6 +26,8 @@ class Configurator:
                     format = 'json'
                 case '.toml':
                     format = 'toml'
+                case '.ini':
+                    format = 'ini'
                 case _:
                     raise ValueError(f"Unsupported file extension: {config_path.suffix}")
 
@@ -38,6 +40,8 @@ class Configurator:
                 config = benedict.from_toml(config_source)
             case 'dict':
                 config = benedict(config_source)
+            case 'ini':
+                config = benedict.from_ini(config_source)
             case _:
                 raise ValueError(f"Unsupported format specification: {format}")
 
